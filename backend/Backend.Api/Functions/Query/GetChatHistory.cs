@@ -22,6 +22,12 @@ namespace backend.Functions.Query
 
         public async Task<List<MessageDTO>> Handle(GetChatHistoryQuery request, CancellationToken cancellationToken)
         {
+            // workaround for cancel on page reload, to make sure that pending response is already stored in DB
+            while (_generatorService.HasPendingMessage())
+            {
+                await Task.Delay(50);
+            }
+
             return await _context.Messages.OrderBy(x => x.CreatedAt).Select(x => x.AsDTO()).ToListAsync();
         }
     }

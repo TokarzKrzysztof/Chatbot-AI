@@ -22,9 +22,9 @@ namespace Backend.Infrastructure.SingletonServices
             _serviceProvider = serviceProvider;
         }
 
-        public Message? GetPendingMessage()
+        public bool HasPendingMessage()
         {
-            return _pendingMessage;
+            return _pendingMessage != null;
         }
 
         public async IAsyncEnumerable<string?> ListenResponseGeneration(CancellationToken cancellationToken)
@@ -53,7 +53,16 @@ namespace Backend.Infrastructure.SingletonServices
 
             await _locker.Run(async () =>
             {
-                await GenerateAndSaveResponseThreadSafe();
+                try
+                {
+                    await GenerateAndSaveResponseThreadSafe();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception during GenerateAndSaveResponseThreadSafe: " + ex.Message);
+                }
+
+                _pendingMessage = null;
             });
         }
 
@@ -90,8 +99,6 @@ namespace Backend.Infrastructure.SingletonServices
                     await dbContext.SaveChangesAsync();
                 }
             }
-
-            _pendingMessage = null;
         }
     }
 }
