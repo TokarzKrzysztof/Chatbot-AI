@@ -1,0 +1,1 @@
+Some readme about application setup, licenses and purpose
