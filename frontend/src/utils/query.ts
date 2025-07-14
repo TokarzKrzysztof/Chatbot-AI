@@ -7,8 +7,8 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, of, switchMap, tap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, firstValueFrom, Observable, of, skip, switchMap, tap } from 'rxjs';
 
 const toWritableSignal = <T>(obs: Observable<T>) => {
   const signal = toSignal(obs);
@@ -56,6 +56,9 @@ export class Query<T> {
 
   refetch() {
     this.refetch$.next({ force: true });
+    return runInInjectionContext(this.injector, () => {
+      return firstValueFrom(toObservable(this.data).pipe(skip(1)));
+    });
   }
 
   set(data: T) {

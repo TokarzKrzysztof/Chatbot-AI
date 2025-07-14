@@ -11,5 +11,4 @@ import { Message } from '../../models/message';
 })
 export class ChatHistory {
   messages = input.required<Message[]>();
-  generatedResponse = input.required<string | null>();
 }

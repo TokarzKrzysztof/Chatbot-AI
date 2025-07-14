@@ -1,4 +1,5 @@
 ﻿using Backend.Database;
+using Backend.Infrastructure.Utils;
 using Backend.Models.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -40,6 +41,7 @@ namespace Backend.Infrastructure.SingletonServices
             }
         }
 
+        private readonly Locker _locker = new();
         public async Task GenerateAndSaveResponse()
         {
             // application is assuming that only one user is using it, in real life we need some kind of sessionIds etc, and dictionary of generated messages
@@ -48,8 +50,16 @@ namespace Backend.Infrastructure.SingletonServices
                 // cancel previous generation when new message is sent
                 _cts.Cancel();
             }
-            // create new instance for new generation
-            _cts = new CancellationTokenSource();
+
+            await _locker.Run(async () =>
+            {
+                await GenerateAndSaveResponseThreadSafe();
+            });
+        }
+
+        private async Task GenerateAndSaveResponseThreadSafe()
+        {
+            _cts = new();
             _pendingMessage = new Message()
             {
                 IsAnswer = true
@@ -66,16 +76,19 @@ namespace Backend.Infrastructure.SingletonServices
                 sb.Append(chatResponse[i]);
                 _pendingMessage.Text = sb.ToString();
 
-                await Task.Delay(50);
+                await Task.Delay(200);
 
                 i++;
             }
 
-            using (var scope = _serviceProvider.CreateScope())
+            if (!string.IsNullOrWhiteSpace(_pendingMessage.Text))
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Messages.Add(_pendingMessage);
-                await dbContext.SaveChangesAsync();
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    dbContext.Messages.Add(_pendingMessage);
+                    await dbContext.SaveChangesAsync();
+                }
             }
 
             _pendingMessage = null;

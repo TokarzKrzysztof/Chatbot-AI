@@ -3,8 +3,3 @@
     <span>{{ item.text }}</span>
   </div>
 }
-@if (generatedResponse(); as responseMessage) {
-  <div class="message" [ngClass]="{ 'is-answer': true }">
-    <span>{{ responseMessage }}</span>
-  </div>
-}
