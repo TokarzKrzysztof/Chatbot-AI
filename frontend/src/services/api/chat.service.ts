@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../environement/environment';
 import { Message } from '../../models/message';
 
@@ -17,5 +18,23 @@ export class ChatService {
 
   sendMessage(data: Pick<Message, 'text'>) {
     return this.http.post<void>(`${url}/SendMessage`, data);
+  }
+
+  getChatResponse(messageId: string): Observable<string> {
+    return new Observable((observer) => {
+      const eventSource = new EventSource(`${url}/GetChatResponse`);
+
+      eventSource.onmessage = (event) => {
+        observer.next(event.data);
+      };
+
+      eventSource.onerror = () => {
+        eventSource.close();
+      };
+
+      return () => {
+        eventSource.close();
+      };
+    });
   }
 }

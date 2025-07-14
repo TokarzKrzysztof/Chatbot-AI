@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 8px;
   padding: 8px;
+  max-height: 500px;
+  overflow: auto;
 }
 
 .message {
@@ -10,8 +12,9 @@
   border: 1px solid lightgrey;
   border-radius: 10px;
   margin-right: auto;
+  white-space: pre-wrap;
 
-  &.created-by-chat {
+  &.is-answer {
     margin-right: auto;
     background-color: var(--mat-sys-primary);
     border: none;

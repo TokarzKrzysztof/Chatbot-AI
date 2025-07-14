@@ -21,9 +21,10 @@ namespace backend.Functions.Command
 		{
 			_context.Messages.Add(new Message()
 			{
-				Text = request.Text
+				Text = request.Text,
+				IsAnswer = false
 			});
-			await _context.SaveChangesAsync();
+			await _context.SaveChangesAsync(cancellationToken);
 
 			return Unit.Value;
 		}

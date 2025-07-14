@@ -19,7 +19,7 @@ namespace backend.Functions.Query
 
 		public async Task<List<MessageDTO>> Handle(GetChatHistoryQuery request, CancellationToken cancellationToken)
 		{
-			return await _context.Messages.Select(x => x.AsDTO()).ToListAsync();
+			return await _context.Messages.OrderBy(x => x.CreatedAt).Select(x => x.AsDTO()).ToListAsync();
 		}
 	}
 

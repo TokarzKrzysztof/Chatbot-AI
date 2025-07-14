@@ -39,6 +39,7 @@ export class MessageField {
   send() {
     this.sendMessage.mutate(this.text()).then(() => {
       this.text.set('')
+      this.chatService.getChatResponse('').subscribe()
     })
   }
 }
