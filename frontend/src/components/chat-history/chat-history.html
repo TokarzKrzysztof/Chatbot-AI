@@ -1,0 +1,7 @@
+@if (messages.data(); as messages) {
+  @for (item of messages; track item.id) {
+    <div class="message" [ngClass]="{ 'created-by-chat': false }">
+      {{ item.text }}
+    </div>
+  }
+}

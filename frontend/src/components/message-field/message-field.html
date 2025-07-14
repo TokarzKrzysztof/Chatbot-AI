@@ -8,7 +8,7 @@
     placeholder="Twoje pytanie..."
     [(ngModel)]="text"
   ></textarea>
-  <button matSuffix matIconButton [disabled]="!text()">
+  <button matSuffix matIconButton [disabled]="!text()" (click)="send()">
     <mat-icon>send</mat-icon>
   </button>
 </mat-form-field>

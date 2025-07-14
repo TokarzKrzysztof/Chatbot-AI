@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.message {
+  padding: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  margin-right: auto;
+
+  &.created-by-chat {
+    margin-right: auto;
+    background-color: var(--mat-sys-primary);
+    border: none;
+  }
+}
