@@ -1,10 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  model
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +26,7 @@ export class MessageField {
   private chatService = inject(ChatService);
 
   protected text = model('');
+  onSendSuccess = output<string>();
 
   sendMessage = new Mutation({
     fn: (text: string) => this.chatService.sendMessage({ text }),
@@ -38,8 +34,8 @@ export class MessageField {
 
   send() {
     this.sendMessage.mutate(this.text()).then(() => {
-      this.text.set('')
-      this.chatService.getChatResponse('').subscribe()
-    })
+      this.onSendSuccess.emit(this.text());
+      this.text.set('');
+    });
   }
 }

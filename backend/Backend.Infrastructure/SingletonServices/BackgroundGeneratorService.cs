@@ -13,8 +13,7 @@ namespace Backend.Infrastructure.SingletonServices
     public class BackgroundGeneratorService
     {
         private CancellationTokenSource _cts = new();
-        private StringBuilder _sb = new();
-        private bool _inProgress = false;
+        private Message? _pendingMessage = null;
 
         private readonly IServiceProvider _serviceProvider;
         public BackgroundGeneratorService(IServiceProvider serviceProvider)
@@ -22,44 +21,51 @@ namespace Backend.Infrastructure.SingletonServices
             _serviceProvider = serviceProvider;
         }
 
-        public async IAsyncEnumerable<string> ListenResponseGeneration(CancellationToken cancellationToken)
+        public Message? GetPendingMessage()
         {
-            while (_inProgress)
+            return _pendingMessage;
+        }
+
+        public async IAsyncEnumerable<string?> ListenResponseGeneration(CancellationToken cancellationToken)
+        {
+            while (_pendingMessage != null)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     _cts.Cancel();
                 }
 
-                yield return _sb.ToString();
-                await Task.Delay(200);
+                yield return _pendingMessage.Text;
+                await Task.Delay(50);
             }
-
-            // return once again to make sure that full message is generated
-            yield return _sb.ToString();
         }
 
         public async Task GenerateAndSaveResponse()
         {
             // application is assuming that only one user is using it, in real life we need some kind of sessionIds etc, and dictionary of generated messages
-            if (_sb.Length > 0)
+            if (_pendingMessage != null)
             {
                 // cancel previous generation when new message is sent
                 _cts.Cancel();
             }
             // create new instance for new generation
             _cts = new CancellationTokenSource();
-            _sb.Clear();
-            _inProgress = true;
+            _pendingMessage = new Message()
+            {
+                IsAnswer = true
+            };
 
             string chatResponse = "123456789abcdefghijk3456789abclmnopr3456789abcstuowc3456789abcdefgh3456789abci3456789abcjklmnoprstuow3456789abccdefghijklmnoprstuow";
 
+            StringBuilder sb = new();
             int i = 0;
             while (!_cts.Token.IsCancellationRequested)
             {
                 if (i == chatResponse.Length) break;
 
-                _sb.Append(chatResponse[i]);
+                sb.Append(chatResponse[i]);
+                _pendingMessage.Text = sb.ToString();
+
                 await Task.Delay(50);
 
                 i++;
@@ -68,15 +74,11 @@ namespace Backend.Infrastructure.SingletonServices
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Messages.Add(new Message()
-                {
-                    Text = _sb.ToString(),
-                    IsAnswer = true
-                });
+                dbContext.Messages.Add(_pendingMessage);
                 await dbContext.SaveChangesAsync();
             }
 
-            _inProgress = false;
+            _pendingMessage = null;
         }
     }
 }

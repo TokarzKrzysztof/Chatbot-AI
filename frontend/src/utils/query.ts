@@ -1,11 +1,19 @@
-import { inject, InjectionToken, Injector, linkedSignal, runInInjectionContext, signal, WritableSignal } from '@angular/core';
+import {
+  inject,
+  InjectionToken,
+  Injector,
+  linkedSignal,
+  runInInjectionContext,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, of, switchMap, tap } from 'rxjs';
 
 const toWritableSignal = <T>(obs: Observable<T>) => {
   const signal = toSignal(obs);
   return linkedSignal(() => signal());
-}
+};
 
 const CACHE = new InjectionToken('cached data', {
   providedIn: 'root',
@@ -53,7 +61,14 @@ export class Query<T> {
   set(data: T) {
     this.data.set(data);
     if (this.params.cachedWithKey) {
-      this.cache[this.params.cachedWithKey] = data;
+      this.cache[this.params.cachedWithKey] = this.data();
+    }
+  }
+
+  update(cb: (prev: T | undefined) => T) {
+    this.data.update(cb);
+    if (this.params.cachedWithKey) {
+      this.cache[this.params.cachedWithKey] = this.data();
     }
   }
 }

@@ -1,19 +1,15 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ChatService } from '../../services/api/chat.service';
-import { Query } from '../../utils/query';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-chat-history',
   imports: [NgClass],
   templateUrl: './chat-history.html',
   styleUrl: './chat-history.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatHistory {
-  private chatService = inject(ChatService);
-
-  messages = new Query({
-    loader: () => this.chatService.getChatHistory()
-  })
+  messages = input.required<Message[]>();
+  generatedResponse = input.required<string | null>();
 }

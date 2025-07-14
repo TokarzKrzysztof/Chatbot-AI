@@ -1,2 +1,5 @@
-<app-chat-history></app-chat-history>
-<app-message-field></app-message-field>
+<app-chat-history
+  [messages]="messages.data() ?? []"
+  [generatedResponse]="generatedResponse()"
+></app-chat-history>
+<app-message-field (onSendSuccess)="onSendSuccess($event)"></app-message-field>

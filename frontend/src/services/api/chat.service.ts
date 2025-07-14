@@ -20,7 +20,7 @@ export class ChatService {
     return this.http.post<void>(`${url}/SendMessage`, data);
   }
 
-  getChatResponse(messageId: string): Observable<string> {
+  getChatResponse(): Observable<string> {
     return new Observable((observer) => {
       const eventSource = new EventSource(`${url}/GetChatResponse`);
 
@@ -29,6 +29,8 @@ export class ChatService {
       };
 
       eventSource.onerror = () => {
+        // error means that connection was closed for some reason, but also when no data is available
+        observer.complete();
         eventSource.close();
       };
 
