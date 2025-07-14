@@ -1,4 +1,5 @@
 ﻿using Backend.Database;
+using Backend.Infrastructure.SingletonServices;
 using Backend.Models.Entities;
 using MediatR;
 
@@ -12,12 +13,14 @@ namespace backend.Functions.Command
 	public class Handler : IRequestHandler<SendMessageCommand, Unit>
 	{
 		private readonly ApplicationDbContext _context;
-		public Handler(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+		private readonly BackgroundGeneratorService _generatorService;
+        public Handler(ApplicationDbContext context, BackgroundGeneratorService generatorService)
+        {
+            _context = context;
+            _generatorService = generatorService;
+        }
 
-		public async Task<Unit> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SendMessageCommand request, CancellationToken cancellationToken)
 		{
 			_context.Messages.Add(new Message()
 			{
@@ -25,6 +28,8 @@ namespace backend.Functions.Command
 				IsAnswer = false
 			});
 			await _context.SaveChangesAsync(cancellationToken);
+
+            _ = _generatorService.GenerateAndSaveResponse();
 
 			return Unit.Value;
 		}

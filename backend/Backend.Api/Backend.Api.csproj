@@ -10,6 +10,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Backend.Database\Backend.Database.csproj" />
+		<ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
 		<ProjectReference Include="..\Backend.Models\Backend.Models.csproj" />
 		<ProjectReference Include="..\Common\Backend.ErrorHandlingMiddleware\Backend.ErrorHandlingMiddleware.csproj" />
 	</ItemGroup>

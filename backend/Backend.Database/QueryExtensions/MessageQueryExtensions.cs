@@ -18,6 +18,7 @@ namespace Backend.Database.QueryExtensions
 				Id = x.Id,
 				CreatedAt = x.CreatedAt,
 				Text = x.Text,
+				IsAnswer = x.IsAnswer,
 			};
 		}
 	}
