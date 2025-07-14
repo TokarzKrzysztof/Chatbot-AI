@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MessageField } from '../message-field/message-field';
 
 @Component({
   selector: 'app-chatbot',
-  imports: [],
+  imports: [MessageField],
   templateUrl: './chatbot.html',
-  styleUrl: './chatbot.scss'
+  styleUrl: './chatbot.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Chatbot {
-
-}
+export class Chatbot {}
