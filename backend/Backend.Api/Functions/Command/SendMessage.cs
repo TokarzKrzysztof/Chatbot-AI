@@ -3,18 +3,18 @@ using Backend.Infrastructure.SingletonServices;
 using Backend.Models.Entities;
 using MediatR;
 
-namespace backend.Functions.Command
+namespace Backend.Api.Functions.Command
 {
 	public class SendMessageCommand : IRequest<Unit>
 	{
 		public string Text { get; set; }
 	}
 
-	public class Handler : IRequestHandler<SendMessageCommand, Unit>
+	public class SendMessageHandler : IRequestHandler<SendMessageCommand, Unit>
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly BackgroundGeneratorService _generatorService;
-        public Handler(ApplicationDbContext context, BackgroundGeneratorService generatorService)
+        public SendMessageHandler(ApplicationDbContext context, BackgroundGeneratorService generatorService)
         {
             _context = context;
             _generatorService = generatorService;

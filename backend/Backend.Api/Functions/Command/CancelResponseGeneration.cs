@@ -7,10 +7,10 @@ namespace Backend.Api.Functions.Command
 {
     public class CancelResponseGenerationCommand : IRequest<Unit>;
 
-    public class Handler : IRequestHandler<CancelResponseGenerationCommand, Unit>
+    public class CancelResponseGenerationHandler : IRequestHandler<CancelResponseGenerationCommand, Unit>
     {
         private readonly BackgroundGeneratorService _generatorService;
-        public Handler(BackgroundGeneratorService generatorService)
+        public CancelResponseGenerationHandler(BackgroundGeneratorService generatorService)
         {
             _generatorService = generatorService;
         }

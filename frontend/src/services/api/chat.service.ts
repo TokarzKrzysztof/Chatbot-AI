@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environement/environment';
 import { Message } from '../../models/message';
+import { SetMessageReactionData } from '../../models/resources/set-message-reaction-data';
 
 const url = `${environment.apiUrl}/Chat`;
 
@@ -18,6 +19,10 @@ export class ChatService {
 
   sendMessage(data: Pick<Message, 'text'>) {
     return this.http.post<void>(`${url}/SendMessage`, data);
+  }
+
+  setMessageReaction(data: SetMessageReactionData) {
+    return this.http.patch<void>(`${url}/SetMessageReaction`, data);
   }
 
   cancelResponseGeneration() {

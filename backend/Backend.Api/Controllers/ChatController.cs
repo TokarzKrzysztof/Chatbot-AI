@@ -1,6 +1,5 @@
-﻿using backend.Functions.Command;
-using backend.Functions.Query;
-using Backend.Api.Functions.Command;
+﻿using Backend.Api.Functions.Command;
+using Backend.Api.Functions.Query;
 using Backend.Infrastructure.SingletonServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +30,13 @@ namespace Backend.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageCommand data)
+        {
+            await _mediator.Send(data);
+            return NoContent();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> SetMessageReaction([FromBody] SetMessageReactionCommand data)
         {
             await _mediator.Send(data);
             return NoContent();

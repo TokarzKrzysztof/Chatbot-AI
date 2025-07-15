@@ -19,6 +19,7 @@ namespace Backend.Database.QueryExtensions
 				CreatedAt = x.CreatedAt,
 				Text = x.Text,
 				IsAnswer = x.IsAnswer,
+				Reaction = x.Reaction,
 			};
 		}
 	}

@@ -26,7 +26,7 @@ export class MessageField {
   private chatService = inject(ChatService);
 
   protected text = model('');
-  showStopButton = input.required<boolean>()
+  showStopButton = input.required<boolean>();
   onSendSuccess = output<string>();
   onStop = output<void>();
 

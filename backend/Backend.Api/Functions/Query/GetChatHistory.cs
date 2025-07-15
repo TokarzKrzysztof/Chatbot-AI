@@ -6,15 +6,15 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
-namespace backend.Functions.Query
+namespace Backend.Api.Functions.Query
 {
     public class GetChatHistoryQuery : IRequest<List<MessageDTO>>;
 
-    public class Handler : IRequestHandler<GetChatHistoryQuery, List<MessageDTO>>
+    public class GetChatHistoryHandler : IRequestHandler<GetChatHistoryQuery, List<MessageDTO>>
     {
         private readonly ApplicationDbContext _context;
         private readonly BackgroundGeneratorService _generatorService;
-        public Handler(ApplicationDbContext context, BackgroundGeneratorService generatorService)
+        public GetChatHistoryHandler(ApplicationDbContext context, BackgroundGeneratorService generatorService)
         {
             _context = context;
             _generatorService = generatorService;

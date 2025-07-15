@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 100%;
+}
+
+mat-icon {
+  color: black;
+
+  &.active {
+    color: var(--mat-sys-primary);
+  }
+}

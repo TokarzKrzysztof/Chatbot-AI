@@ -1,5 +1,8 @@
 @for (item of messages(); track $index) {
   <div class="message" [ngClass]="{ 'is-answer': item.isAnswer }">
     <span>{{ item.text }}</span>
+    @if (item.isAnswer) {
+      <app-message-reactions [message]="item"></app-message-reactions>
+    }
   </div>
 }
