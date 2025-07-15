@@ -1,5 +1,6 @@
 ﻿using backend.Functions.Command;
 using backend.Functions.Query;
+using Backend.Api.Functions.Command;
 using Backend.Infrastructure.SingletonServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,13 @@ namespace Backend.Api.Controllers
         public async Task<IActionResult> SendMessage([FromBody] SendMessageCommand data)
         {
             await _mediator.Send(data);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> CancelResponseGeneration()
+        {
+            await _mediator.Send(new CancelResponseGenerationCommand());
             return NoContent();
         }
 

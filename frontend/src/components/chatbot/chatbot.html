@@ -1,2 +1,6 @@
 <app-chat-history [messages]="messages.data() ?? []"></app-chat-history>
-<app-message-field (onSendSuccess)="onSendSuccess($event)"></app-message-field>
+<app-message-field
+  (onSendSuccess)="onSendSuccess($event)"
+  (onStop)="cancelResponseGeneration.mutate()"
+  [showStopButton]="showStopButton()"
+></app-message-field>

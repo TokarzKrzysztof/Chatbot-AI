@@ -20,6 +20,10 @@ export class ChatService {
     return this.http.post<void>(`${url}/SendMessage`, data);
   }
 
+  cancelResponseGeneration() {
+    return this.http.delete<void>(`${url}/CancelResponseGeneration`);
+  }
+
   getChatResponse(): Observable<string> {
     return new Observable((observer) => {
       const eventSource = new EventSource(`${url}/GetChatResponse`);

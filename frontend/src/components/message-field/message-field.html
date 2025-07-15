@@ -8,7 +8,13 @@
     placeholder="Twoje pytanie..."
     [(ngModel)]="text"
   ></textarea>
-  <button matSuffix matIconButton [disabled]="!text()" (click)="send()">
-    <mat-icon>send</mat-icon>
-  </button>
+  @if (showStopButton() && !text()) {
+    <button matSuffix matIconButton (click)="onStop.emit()">
+      <mat-icon>stop_circle</mat-icon>
+    </button>
+  } @else {
+    <button matSuffix matIconButton [disabled]="!text()" (click)="onSend()">
+      <mat-icon>send</mat-icon>
+    </button>
+  }
 </mat-form-field>

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Message } from '../../models/message';
 import { ChatService } from '../../services/api/chat.service';
+import { Mutation } from '../../utils/mutation';
 import { Query } from '../../utils/query';
 import { ChatHistory } from '../chat-history/chat-history';
 import { MessageField } from '../message-field/message-field';
@@ -17,13 +18,19 @@ export class Chatbot {
   private destroyRef = inject(DestroyRef);
   private chatService = inject(ChatService);
 
+  showStopButton = signal(false);
+
   messages = new Query({
     loader: () => this.chatService.getChatHistory(),
+  });
+  cancelResponseGeneration = new Mutation({
+    fn: () => this.chatService.cancelResponseGeneration(),
   });
 
   async onSendSuccess(question: string) {
     this.messages.update((prev) => [...prev!, { text: question } as Message]);
 
+    this.showStopButton.set(true);
     this.chatService
       .getChatResponse()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -41,6 +48,7 @@ export class Chatbot {
         },
         complete: () => {
           this.messages.refetch();
+          this.showStopButton.set(false);
         },
       });
   }

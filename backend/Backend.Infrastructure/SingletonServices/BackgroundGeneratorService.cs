@@ -29,6 +29,11 @@ namespace Backend.Infrastructure.SingletonServices
             return _pendingMessage != null;
         }
 
+        public void Cancel()
+        {
+            _cts.Cancel();
+        }
+
         public async IAsyncEnumerable<string?> ListenResponseGeneration(CancellationToken cancellationToken)
         {
             while (_pendingMessage != null)
