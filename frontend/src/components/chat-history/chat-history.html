@@ -1,4 +1,4 @@
-@for (item of messages(); track item.id) {
+@for (item of messages(); track $index) {
   <div class="message" [ngClass]="{ 'is-answer': item.isAnswer }">
     <span>{{ item.text }}</span>
   </div>

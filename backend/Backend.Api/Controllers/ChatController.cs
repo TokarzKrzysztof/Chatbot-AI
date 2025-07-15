@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace Backend.Api.Controllers
 {
@@ -40,7 +41,7 @@ namespace Backend.Api.Controllers
             Response.Headers.ContentType = "text/event-stream";
             await foreach (var current in _backgroundGeneratorService.ListenResponseGeneration(cancellationToken))
             {
-                await Response.WriteAsync($"data: {current}" + "\n\n");
+                await Response.WriteAsync($"data: {JsonSerializer.Serialize(current)}" + "\n\n");
                 await Response.Body.FlushAsync();
             }
         }

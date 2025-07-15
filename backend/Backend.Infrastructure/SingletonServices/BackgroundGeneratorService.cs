@@ -1,6 +1,8 @@
-﻿using Backend.Database;
-using Backend.Infrastructure.Utils;
+﻿using Azure;
+using Backend.Database;
+using Backend.Infrastructure.Helpers;
 using Backend.Models.Entities;
+using Backend.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -74,20 +76,9 @@ namespace Backend.Infrastructure.SingletonServices
                 IsAnswer = true
             };
 
-            string chatResponse = "123456789abcdefghijk3456789abclmnopr3456789abcstuowc3456789abcdefgh3456789abci3456789abcjklmnoprstuow3456789abccdefghijklmnoprstuow";
-
-            StringBuilder sb = new();
-            int i = 0;
-            while (!_cts.Token.IsCancellationRequested)
+            await foreach (var current in AIGenerator.Generate(_cts.Token))
             {
-                if (i == chatResponse.Length) break;
-
-                sb.Append(chatResponse[i]);
-                _pendingMessage.Text = sb.ToString();
-
-                await Task.Delay(200);
-
-                i++;
+                _pendingMessage.Text = current;
             }
 
             if (!string.IsNullOrWhiteSpace(_pendingMessage.Text))

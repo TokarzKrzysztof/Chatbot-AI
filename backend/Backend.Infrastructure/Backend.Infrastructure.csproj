@@ -10,5 +10,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Backend.Database\Backend.Database.csproj" />
 		<ProjectReference Include="..\Backend.Models\Backend.Models.csproj" />
+		<ProjectReference Include="..\Common\Backend.Utilities\Backend.Utilities.csproj" />
 	</ItemGroup>
 </Project>

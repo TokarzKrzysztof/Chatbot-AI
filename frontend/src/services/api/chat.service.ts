@@ -25,7 +25,7 @@ export class ChatService {
       const eventSource = new EventSource(`${url}/GetChatResponse`);
 
       eventSource.onmessage = (event) => {
-        observer.next(event.data);
+        observer.next(JSON.parse(event.data));
       };
 
       eventSource.onerror = () => {
