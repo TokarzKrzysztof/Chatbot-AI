@@ -4,7 +4,7 @@ using Backend.Models.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Api.Functions.Command
+namespace Backend.Infrastructure.Functions.Command
 {
     public class SetMessageReactionCommand : IRequest<Unit>
     {

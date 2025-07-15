@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Backend.Infrastructure.SingletonServices;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Backend.Infrastructure.SingletonServices;
+using System.Reflection;
 
 namespace Backend.Infrastructure.StartupExtensions
 {
@@ -8,6 +9,7 @@ namespace Backend.Infrastructure.StartupExtensions
     {
         public static void AddInfrastructure(this WebApplicationBuilder builder)
         {
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             builder.Services.AddSingleton<BackgroundGeneratorService>();
         }
     }

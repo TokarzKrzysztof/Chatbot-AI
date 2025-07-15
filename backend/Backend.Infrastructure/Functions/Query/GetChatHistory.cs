@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
-namespace Backend.Api.Functions.Query
+namespace Backend.Infrastructure.Functions.Command
 {
     public class GetChatHistoryQuery : IRequest<List<MessageDTO>>;
 

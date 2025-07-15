@@ -1,5 +1,4 @@
-﻿using Backend.Api.Functions.Command;
-using Backend.Api.Functions.Query;
+﻿using Backend.Infrastructure.Functions.Command;
 using Backend.Infrastructure.SingletonServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

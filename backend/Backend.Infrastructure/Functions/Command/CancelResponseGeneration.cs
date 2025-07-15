@@ -3,7 +3,7 @@ using Backend.Infrastructure.SingletonServices;
 using Backend.Models.Entities;
 using MediatR;
 
-namespace Backend.Api.Functions.Command
+namespace Backend.Infrastructure.Functions.Command
 {
     public class CancelResponseGenerationCommand : IRequest<Unit>;
 
