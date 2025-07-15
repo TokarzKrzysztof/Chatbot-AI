@@ -10,13 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options =>
-{
-    // do not throw error on request when some data is missing, (implicit [Required])
-    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-    // allow to return null from requests
-    options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-}).AddNewtonsoftJson();
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
