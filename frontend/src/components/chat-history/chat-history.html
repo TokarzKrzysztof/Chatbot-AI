@@ -1,7 +1,7 @@
 @for (item of messages(); track $index) {
   <div class="message" [ngClass]="{ 'is-answer': item.isAnswer }">
     <span>{{ item.text }}</span>
-    @if (item.isAnswer) {
+    @if (item.isAnswer && !item.isGenerating) {
       <app-message-reactions [message]="item"></app-message-reactions>
     }
   </div>

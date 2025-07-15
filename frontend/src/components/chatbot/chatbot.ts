@@ -41,7 +41,7 @@ export class Chatbot {
           if (last.isAnswer) {
             last.text = result;
           } else {
-            messages.push({ text: result, isAnswer: true } as Message);
+            messages.push({ text: result, isAnswer: true, isGenerating: true } as Message);
           }
 
           this.messages.set([...messages]);

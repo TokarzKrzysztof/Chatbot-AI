@@ -10,4 +10,7 @@ export type Message = {
   text: string;
   isAnswer: boolean;
   reaction: MessageReaction;
+
+  // UI
+  isGenerating?: boolean;
 };
