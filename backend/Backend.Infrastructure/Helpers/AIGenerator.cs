@@ -9,6 +9,7 @@ namespace Backend.Infrastructure.Helpers
 {
     public static class AIGenerator
     {
+
         private static readonly string[] _responses = [
             "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, cumque natus esse accusamus soluta harum magni quam? Sapiente aliquid illum, excepturi maxime tenetur, quas, fugiat inventore vero sequi repudiandae et?",
@@ -20,6 +21,7 @@ namespace Backend.Infrastructure.Helpers
 
         public static async IAsyncEnumerable<string> Generate(CancellationToken cancellationToken)
         {
+
             string chatResponse = _responses.Random();
 
             StringBuilder sb = new();
@@ -28,8 +30,8 @@ namespace Backend.Infrastructure.Helpers
             {
                 if (i == chatResponse.Length) break;
 
-                sb.Append(chatResponse[i]);
-                yield return sb.ToString();
+                //sb.Append(chatResponse[i]);
+                yield return chatResponse[i].ToString();
 
                 await Task.Delay(10);
 

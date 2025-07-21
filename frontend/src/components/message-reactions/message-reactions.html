@@ -1,4 +1,4 @@
-@if (message().reaction === MessageReaction.None) {
+<!-- @if (message().reaction === MessageReaction.None) {
   <button matIconButton (click)="setReaction(MessageReaction.Positive)">
     <mat-icon>thumb_up</mat-icon>
   </button>
@@ -11,4 +11,14 @@
       {{ message().reaction === MessageReaction.Positive ? 'thumb_up' : 'thumb_down' }}
     </mat-icon>
   </button>
-}
+} -->
+<button matIconButton (click)="setReaction(MessageReaction.Positive)">
+  <mat-icon [ngClass]="{ active: message().reaction === MessageReaction.Positive }"
+    >thumb_up</mat-icon
+  >
+</button>
+<button matIconButton (click)="setReaction(MessageReaction.Negative)">
+  <mat-icon [ngClass]="{ active: message().reaction === MessageReaction.Negative }"
+    >thumb_down</mat-icon
+  >
+</button>

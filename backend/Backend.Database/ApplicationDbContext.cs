@@ -21,6 +21,8 @@ namespace Backend.Database
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+			builder.Entity<Message>().Property(x => x.Reaction).HasConversion<string>();
+
 			base.OnModelCreating(builder);
 		}
 	}

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Message } from '../../models/message';
+import { Message, MessageReaction } from '../../models/message';
 import { ChatService } from '../../services/api/chat.service';
 import { Mutation } from '../../utils/mutation';
 import { Query } from '../../utils/query';
@@ -39,15 +39,20 @@ export class Chatbot {
           const messages = this.messages.data()!;
           const last = messages[messages.length - 1];
           if (last.isAnswer) {
-            last.text = result;
+            last.text = result.text;
           } else {
-            messages.push({ text: result, isAnswer: true, isGenerating: true } as Message);
+            messages.push({ text: result.text, isAnswer: true, isGenerating: true, id: result.id, reaction: MessageReaction.None } as Message);
           }
 
           this.messages.set([...messages]);
         },
         complete: () => {
-          this.messages.refetch();
+          const messages = this.messages.data()!;
+          const last = messages[messages.length - 1];
+          last.isGenerating = false;
+          this.messages.set([...messages]);
+
+          // this.messages.refetch();
           this.showStopButton.set(false);
         },
       });

@@ -53,7 +53,7 @@ namespace Backend.Api.Controllers
             Response.Headers.ContentType = "text/event-stream";
             await foreach (var current in _backgroundGeneratorService.ListenResponseGeneration(cancellationToken))
             {
-                await Response.WriteAsync($"data: {JsonSerializer.Serialize(current)}" + "\n\n");
+                await Response.WriteAsync($"data: {JsonSerializer.Serialize(new { current.text, current.id})}" + "\n\n");
                 await Response.Body.FlushAsync();
             }
         }

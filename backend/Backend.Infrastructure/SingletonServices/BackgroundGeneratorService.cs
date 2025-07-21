@@ -34,7 +34,7 @@ namespace Backend.Infrastructure.SingletonServices
             _cts.Cancel();
         }
 
-        public async IAsyncEnumerable<string?> ListenResponseGeneration(CancellationToken cancellationToken)
+        public async IAsyncEnumerable<(string text, Guid id)> ListenResponseGeneration(CancellationToken cancellationToken)
         {
             while (_pendingMessage != null)
             {
@@ -43,7 +43,7 @@ namespace Backend.Infrastructure.SingletonServices
                     _cts.Cancel();
                 }
 
-                yield return _pendingMessage.Text;
+                yield return (_pendingMessage.Text, _pendingMessage.Id);
                 await Task.Delay(50);
             }
         }
@@ -83,7 +83,7 @@ namespace Backend.Infrastructure.SingletonServices
 
             await foreach (var current in AIGenerator.Generate(_cts.Token))
             {
-                _pendingMessage.Text = current;
+                _pendingMessage.Text += current;
             }
 
             if (!string.IsNullOrWhiteSpace(_pendingMessage.Text))

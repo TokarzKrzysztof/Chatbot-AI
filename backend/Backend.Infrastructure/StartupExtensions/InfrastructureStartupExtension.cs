@@ -1,4 +1,5 @@
-﻿using Backend.Infrastructure.SingletonServices;
+﻿using Backend.Infrastructure.Helpers;
+using Backend.Infrastructure.SingletonServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace Backend.Infrastructure.StartupExtensions
         {
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             builder.Services.AddSingleton<BackgroundGeneratorService>();
+
         }
     }
 }

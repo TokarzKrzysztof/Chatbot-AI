@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +15,7 @@ import { Mutation } from '../../utils/mutation';
 
 @Component({
   selector: 'app-message-reactions',
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, NgClass],
   templateUrl: './message-reactions.html',
   styleUrl: './message-reactions.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,9 +32,19 @@ export class MessageReactions {
     fn: (data: SetMessageReactionData) => this.chatService.setMessageReaction(data),
   });
 
+ngOnInit() {
+  console.log(this.message().reaction)
+}
+
   setReaction(value: MessageReaction) {
-    this.setMessageReaction.mutate({ messageId: this.message().id, reaction: value }).then(() => {
-      this.message().reaction = value;
+    let newReaction: MessageReaction | undefined = undefined;
+    if(this.message().reaction === value) {
+      newReaction = MessageReaction.None
+    } else {
+      newReaction = value;
+    }
+    this.setMessageReaction.mutate({ messageId: this.message().id, reaction: newReaction }).then(() => {
+      this.message().reaction = newReaction;
       this.cdr.markForCheck();
     });
   }

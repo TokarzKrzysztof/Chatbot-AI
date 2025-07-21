@@ -5,6 +5,11 @@ import { environment } from '../../environement/environment';
 import { Message } from '../../models/message';
 import { SetMessageReactionData } from '../../models/resources/set-message-reaction-data';
 
+export type ResponseObj = {
+  text: string;
+  id: string; 
+}
+
 const url = `${environment.apiUrl}/Chat`;
 
 @Injectable({
@@ -29,7 +34,7 @@ export class ChatService {
     return this.http.delete<void>(`${url}/CancelResponseGeneration`);
   }
 
-  getChatResponse(): Observable<string> {
+  getChatResponse(): Observable<ResponseObj> {
     return new Observable((observer) => {
       const eventSource = new EventSource(`${url}/GetChatResponse`);
 
